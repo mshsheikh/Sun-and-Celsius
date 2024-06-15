@@ -56,8 +56,5 @@ function updateBackgroundGradient(data) {
     const newGradient = `linear-gradient(270deg, ${gradientColors.join(', ')}, #4facfe)`;
     document.body.style.background = newGradient;
     document.body.style.backgroundSize = '1600% 100%';
-    document.body.style.animation = 'none';
-    setTimeout(() => {
-        document.body.style.animation = 'backgroundAnimation 60s ease infinite';
-    }, 10); // Restart animation to apply new colors
+    // Removed the code to restart the animation
 }
