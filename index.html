@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Web • in/mshsheikh</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-<div class="container">
-<div class="weather-app">
-<h1>Weather Forecasts</h1>
-<div class="search-box">
-<input type="text" id="city-input" placeholder="Enter city name">
-<button id="search-button"><i class="fas fa-search"></i></button>
-</div>
-<div class="weather-info hidden">
-<div id="weather-icon"></div>
-<h2 id="city-name">City</h2>
-<h3 id="temperature">Temperature: --</h3>
-<h3 id="feels-like">Feels like: --</h3>
-<h3 id="wind-speed">Wind speed: --</h3>
-<h3 id="rain">Rain: --</h3>
-<h3 id="forecast-date">Date: --</h3>
-</div>
-<div class="additional-info hidden">
-<div id="air-quality">Air Quality: --</div>
-<div id="sunrise">Sunrise: --</div>
-<div id="sunset">Sunset: --</div>
-<div id="uv-index">UV Index: --</div>
-</div><br>
-<div class="random-cities">
-<h2 id="popular-cities-heading">Popular Cities</h2>
-<div id="random-cities-weather"></div>
-</div>
-</div><br>
-<div class="information">
-<div id="developer-name">Developed by: Muhammad Salman Hussain</div>
-<div id="app-version">Version: 1.1.14</div>
-</div>
-</div>
-<script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Web • in/mshsheikh</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="icon" href="icon/icon.png" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="weather-app">
+        <h1>Weather Forecasts</h1>
+        <div class="search-box">
+          <input type="text" id="city-input" placeholder="Enter city name" />
+          <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="weather-info hidden">
+          <div id="weather-icon"></div>
+          <h2 id="city-name">City</h2>
+          <h3 id="temperature">Temperature: --</h3>
+          <h3 id="feels-like">Feels like: --</h3>
+          <h3 id="wind-speed">Wind speed: --</h3>
+          <h3 id="rain">Rain: --</h3>
+          <h3 id="forecast-date">Date: --</h3>
+        </div>
+        <div class="additional-info hidden">
+          <div id="air-quality">Air Quality: --</div>
+          <div id="sunrise">Sunrise: --</div>
+          <div id="sunset">Sunset: --</div>
+          <div id="uv-index">UV Index: --</div>
+        </div>
+        <br />
+        <div class="random-cities">
+          <h2 id="popular-cities-heading">Popular Cities</h2>
+          <div id="random-cities-weather"></div>
+        </div>
+      </div>
+      <br />
+      <div class="information">
+        <div id="developer-name">Developed by: Muhammad Salman Hussain</div>
+        <div id="app-version">Version: 1.2.4</div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
