@@ -5,41 +5,36 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(270deg, #4facfe, #00f2fe, #1a2a6c, #b21f1f, #fdbb2d, #36d1dc, #5b86e5, #4facfe);
-    background-size: 1600% 100%;
-    animation: backgroundAnimation 60s ease infinite;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(270deg, #667eea, #764ba2, #667eea, #764ba2);
+    background-size: 600% 600%;
+    animation: gradientAnimation 20s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    color: #fff;
 }
 
-@keyframes backgroundAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
-    max-width: 500px;
-    width: 100%;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.weather-app {
+    padding: 20px;
     text-align: center;
+    transition: max-height 0.5s ease-in-out;
 }
 
 .weather-app h1 {
     font-size: 2em;
-    color: #fff;
     margin-bottom: 20px;
 }
 
@@ -54,32 +49,27 @@ body {
     border: none;
     border-radius: 5px 0 0 5px;
     width: 70%;
+    outline: none;
 }
 
 .search-box button {
     padding: 10px;
     border: none;
-    background: #000000;
+    background: #ff9800;
     color: #fff;
     cursor: pointer;
     border-radius: 0 5px 5px 0;
 }
 
-.weather-info {
-    color: #fff;
+.weather-info, .additional-info {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.weather-info.hidden {
-    max-height: 0;
-    opacity: 0;
-}
-
-.weather-info.visible {
-    max-height: 500px; /* or a value large enough to show the content */
+.weather-info.visible, .additional-info.visible {
+    max-height: 500px;
     opacity: 1;
 }
 
@@ -88,12 +78,90 @@ body {
     margin-bottom: 10px;
 }
 
-.weather-info h3 {
+.weather-info h3, .additional-info div {
     margin: 5px 0;
 }
 
-#weather-icon {
-    margin-top: 10px;
+#weather-icon img {
+    width: 100px;
+}
+
+#developer-name {
+    font-size: 10px;
+}
+
+#app-version {
+    font-size: 8px;
+}
+
+.random-cities {
+    margin-top: 20px;
+}
+
+.random-cities h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#random-cities-weather {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.city-weather {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    animation: slideIn 2s ease-in-out;
+}
+
+.city-weather img {
+    width: 50px;
+    margin-right: 10px;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutSection {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+        max-height: 100%;
+    }
+    100% {
+        transform: translateY(-20px);
+        opacity: 0;
+        max-height: 0;
+    }
+}
+
+.hidden-section {
+    animation: slideOutSection 1s forwards;
+}
+
+.hidden {
+    display: none;
 }
 
 @media (max-width: 768px) {
