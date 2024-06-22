@@ -1,110 +1,129 @@
-document.getElementById('search-button').addEventListener('click', getWeather);
+document.addEventListener('DOMContentLoaded', () => {
+  const allCities = ['New York', 'London', 'Paris', 'Sydney', 'Tokyo', 'Moscow', 'Berlin', 'Doha', 'Rome', 'Toronto', 'Beijing', 'Cairo', 'Bangkok', 'Phuket', 'Dubai', 'Austin', 'Porto', 'Seoul', 'Chicago', 'Istanbul'];
+  const apiKey = 'b8aa09d2a5194d90af3235023241406';
+  const popularCitiesSection = document.querySelector('.slider');
+  const popularCitiesHeading = document.getElementById('popular-cities-heading');
+  const slideDuration = 4; // seconds
+  let currentSlide = 0;
+  let intervalId;
 
-function getWeather() {
+  function getRandomCities(cities, num) {
+    const shuffled = cities.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+  }
+
+  async function fetchWeatherForCity(city) {
+    const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data;
+  }
+
+  async function displayRandomCitiesWeather() {
+    const cities = getRandomCities(allCities, 5);
+    const promises = cities.map(city => fetchWeatherForCity(city));
+    const results = await Promise.all(promises);
+
+    results.forEach(data => {
+      const cityTime = new Date(data.location.localtime);
+      const hours = cityTime.getHours() % 12 || 12;
+      const minutes = cityTime.getMinutes().toString().padStart(2, '0');
+      const ampm = cityTime.getHours() >= 12 ? 'PM' : 'AM';
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.innerHTML = `
+        <div class="weather-card">
+          <img src="${data.current.condition.icon}" alt="Weather icon">
+          <h3>${data.location.name}</h3>
+          <p><span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F</p>
+          <p>${hours}:${minutes} ${ampm}</p>
+        </div>
+      `;
+      popularCitiesSection.appendChild(slide);
+    });
+
+    startSlider();
+  }
+
+  function startSlider() {
+    intervalId = setInterval(() => {
+      showNextSlide();
+    }, slideDuration * 1000);
+    showNextSlide();
+  }
+
+  function showNextSlide() {
+    const slides = document.querySelectorAll('.slide');
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+    updateSlideTransforms();
+  }
+
+  function updateSlideTransforms() {
+    const slides = document.querySelectorAll('.slide');
+    const angle = 360 / slides.length;
+    slides.forEach((slide, index) => {
+      const offset = index - currentSlide;
+      slide.style.transform = `rotateY(${offset * angle}deg) translateZ(100px)`;
+    });
+  }
+
+  displayRandomCitiesWeather();
+
+  document.getElementById('search-button').addEventListener('click', () => {
     const city = document.getElementById('city-input').value;
-    const apiKey = 'b8aa09d2a5194d90af3235023241406'; // Replace with your WeatherAPI key
     const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
 
-    console.log('Fetching weather data for:', city); // Logging city name
-
     fetch(apiUrl)
-        .then(response => {
-            console.log('API response status:', response.status); // Logging response status
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Weather data received:', data); // Logging received data
-            updateWeatherInfo(data);
-            updateBackgroundGradient(data);
-            hidePopularCities(); // Hide the popular cities section
-        })
-        .catch(error => {
-            console.error('Error fetching weather data:', error);
-        });
-}
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        updateWeatherInfo(data);
+        updateBackgroundGradient(data);
+        hidePopularCities();
+      })
+      .catch(error => {
+        console.error('Error fetching weather data:', error);
+      });
+  });
 
-function updateWeatherInfo(data) {
+  function updateWeatherInfo(data) {
     document.getElementById('city-name').textContent = data.location.name;
-    document.getElementById('temperature').textContent = `Temperature: ${data.current.temp_c} °C (${data.current.temp_f} °F)`;
-    document.getElementById('feels-like').textContent = `Feels like: ${data.current.feelslike_c} °C (${data.current.feelslike_f} °F)`;
+    document.getElementById('temperature').innerHTML = `Temperature: <span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F`;
+    document.getElementById('feels-like').textContent = `Feels like: ${data.current.feelslike_c}°C / ${data.current.feelslike_f}°F`;
     document.getElementById('wind-speed').textContent = `Wind speed: ${data.current.wind_kph} kph`;
-    document.getElementById('rain').textContent = data.current.precip_mm ? `Rain: ${data.current.precip_mm} mm` : 'Rain: 0 mm';
-    document.getElementById('forecast-date').textContent = `Date: ${data.location.localtime}`;
-    const iconUrl = data.current.condition.icon;
-    document.getElementById('weather-icon').innerHTML = `<img src="${iconUrl}" alt="Weather icon">`;
+    document.getElementById('rain').textContent = `Rain: ${data.current.precip_mm} mm`;
+    const cityTime = new Date(data.location.localtime);
+    const hours = cityTime.getHours() % 12 || 12;
+    const minutes = cityTime.getMinutes().toString().padStart(2, '0');
+    const ampm = cityTime.getHours() >= 12 ? 'PM' : 'AM';
+    document.getElementById('forecast-date').textContent = `Date: ${hours}:${minutes} ${ampm}`;
+    document.getElementById('weather-icon').innerHTML = `<img src="${data.current.condition.icon}" alt="Weather icon">`;
+    document.querySelector('.weather-info').classList.add('visible');
+  }
 
-    document.getElementById('air-quality').textContent = `Air Quality: ${data.current.air_quality}`;
-    document.getElementById('sunrise').textContent = `Sunrise: ${data.current.sunrise}`;
-    document.getElementById('sunset').textContent = `Sunset: ${data.current.sunset}`;
-    document.getElementById('uv-index').textContent = `UV Index: ${data.current.uv}`;
-
-    const weatherInfo = document.querySelector('.weather-info');
-    weatherInfo.classList.remove('hidden');
-    weatherInfo.classList.add('visible');
-
-    const additionalInfo = document.querySelector('.additional-info');
-    additionalInfo.classList.remove('hidden');
-    additionalInfo.classList.add('visible');
-}
-
-function updateBackgroundGradient(data) {
-    let gradientColors;
-
-    if (data.current.temp_c > 30) {
-        // Hot weather
-        gradientColors = ['#ff7e5f', '#feb47b'];
-    } else if (data.current.temp_c > 20) {
-        // Warm weather
-        gradientColors = ['#ff9a9e', '#fad0c4'];
-    } else if (data.current.temp_c > 10) {
-        // Mild weather
-        gradientColors = ['#a18cd1', '#fbc2eb'];
+  function updateBackgroundGradient(data) {
+    const condition = data.current.condition.text.toLowerCase();
+    let gradient;
+    if (condition.includes('rain')) {
+      gradient = 'linear-gradient(270deg, #00c6ff, #0072ff)';
+    } else if (condition.includes('cloud')) {
+      gradient = 'linear-gradient(270deg, #bdc3c7, #2c3e50)';
+    } else if (condition.includes('clear')) {
+      gradient = 'linear-gradient(270deg, #ff9800, #ffeb3b)';
     } else {
-        // Cold weather
-        gradientColors = ['#667eea', '#764ba2'];
+      gradient = 'linear-gradient(270deg, #4caf50, #8bc34a)';
     }
+    document.body.style.background = gradient;
+  }
 
-    document.body.style.background = `linear-gradient(270deg, ${gradientColors.join(', ')})`;
-}
-
-function hidePopularCities() {
-    const popularCitiesSection = document.querySelector('.random-cities');
-
-    popularCitiesSection.classList.add('hidden-section');
-
-    // Optionally, you can remove the element from the DOM after animation
-    setTimeout(() => {
-        popularCitiesSection.style.display = 'none';
-    }, 500); // Match the duration of the slideOutSection animation
-}
-
-// Initialize with random city weather on page load
-document.addEventListener('DOMContentLoaded', getRandomCitiesWeather);
-
-function getRandomCitiesWeather() {
-    const cities = ['New York', 'London', 'Tokyo', 'Paris', 'Sydney'];
-    const apiKey = 'b8aa09d2a5194d90af3235023241406'; // Replace with your WeatherAPI key
-
-    cities.forEach(city => {
-        const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const cityWeatherDiv = document.createElement('div');
-                cityWeatherDiv.classList.add('city-weather');
-                cityWeatherDiv.innerHTML = `
-                    <img src="${data.current.condition.icon}" alt="Weather icon">
-                    <div>
-                        <h4>${data.location.name}</h4>
-                        <p>${data.current.temp_c} °C (${data.current.temp_f} °F)</p>
-                    </div>
-                `;
-                document.getElementById('random-cities-weather').appendChild(cityWeatherDiv);
-            })
-            .catch(error => console.error('Error fetching weather data:', error));
-    });
-}
+  function hidePopularCities() {
+    popularCitiesHeading.style.display = 'none';
+    popularCitiesSection.style.display = 'none';
+  }
+});
