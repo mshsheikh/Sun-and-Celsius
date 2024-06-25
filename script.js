@@ -1,25 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cityCountryMapping = {
     "New York": "USA",
-    "London": "UK",
-    "Paris": "France",
-    "Sydney": "Australia",
-    "Tokyo": "Japan",
-    "Moscow": "Russia",
-    "Berlin": "Germany",
-    "Shanghai": "China",
-    "Rome": "Italy",
-    "Toronto": "Canada",
-    "Beijing": "China",
-    "Cairo": "Egypt",
-    "Bangkok": "Thailand",
-    "Phuket": "Thailand",
-    "Dubai": "UAE",
-    "Austin": "USA",
-    "Boston": "USA",
-    "Seoul": "South Korea",
-    "Chicago": "USA",
-    "Istanbul": "Turkey",
+    London: "UK",
+    Paris: "France",
+    Sydney: "Australia",
+    Tokyo: "Japan",
+    Moscow: "Russia",
+    Berlin: "Germany",
+    Shanghai: "China",
+    Rome: "Italy",
+    Toronto: "Canada",
+    Beijing: "China",
+    Cairo: "Egypt",
+    Bangkok: "Thailand",
+    Phuket: "Thailand",
+    Dubai: "UAE",
+    Austin: "USA",
+    Boston: "USA",
+    "San Jose": "USA",
+    Chicago: "USA",
+    Istanbul: "Turkey",
+    Madrid: "Spain",
+    Mumbai: "India",
+    Lagos: "Nigeria",
+    Jakarta: "Indonesia",
   };
 
   const allCities = Object.keys(cityCountryMapping);
@@ -28,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const popularCitiesHeading = document.getElementById(
     "popular-cities-heading"
   );
-  const slideDuration = 2; // seconds
+  const slideDuration = 2.6; // seconds
   let currentSlide = 0;
   let intervalId;
 
@@ -62,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <img src="${data.current.condition.icon}" alt="Weather icon">
           <h3>${data.location.name}</h3>
           <p class="country">${country}</p>
-          <p class="temperature-details"><span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F</p>
+          <p class="temperature-details"><span class="temperature">${data.current.temp_c}°C</span></p>
           <p>${hours}:${minutes} ${ampm}</p>
         </div>
       `;
@@ -123,10 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("city-name").textContent = data.location.name;
     document.getElementById(
       "temperature"
-    ).innerHTML = `Temperature: <span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F`;
+    ).innerHTML = `Temperature: <span class="temperature">${data.current.temp_c}°C</span>`;
     document.getElementById(
       "feels-like"
-    ).textContent = `Feels like: ${data.current.feelslike_c}°C / ${data.current.feelslike_f}°F`;
+    ).textContent = `Feels like: ${data.current.feelslike_c}°C`;
     document.getElementById(
       "wind-speed"
     ).textContent = `Wind speed: ${data.current.wind_kph} kph`;
