@@ -208,11 +208,11 @@ body {
 }
 
 h3 {
-  margin-bottom: auto; /* Reduce space between city and country name */
+  margin-bottom: auto;
 }
 
 .temperature-details {
-  margin-top: 7px; /* Add space between country and temperature details */
+  margin-top: 7px;
 }
 
 @media (max-width: 768px) {
