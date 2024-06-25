@@ -10,10 +10,15 @@ body {
     270deg,
     #2740ad,
     #562a83,
-    #364eb9,
-    #1569a1,
+    #478f2b,
+    #039e70,
     #5f006bdc,
-    #67418d
+    #c26802,
+    #5f006bdc,
+    #039e70,
+    #478f2b,
+    #562a83,
+    #2740ad
   );
   background-size: 600% 600%;
   animation: gradientAnimation 26s ease infinite;
@@ -123,7 +128,7 @@ body {
 
 #developer-name {
   font-size: 10px;
-  padding-top: 30px;
+  padding-top: 50px;
 }
 
 #app-version {
@@ -190,6 +195,24 @@ body {
 
 .weather-card .temperature {
   font-weight: bold;
+}
+
+.country {
+  font-size: 3px;
+  margin: 0;
+}
+
+.country {
+  font-size: 3px;
+  margin: 0;
+}
+
+h3 {
+  margin-bottom: auto; /* Reduce space between city and country name */
+}
+
+.temperature-details {
+  margin-top: 7px; /* Add space between country and temperature details */
 }
 
 @media (max-width: 768px) {
