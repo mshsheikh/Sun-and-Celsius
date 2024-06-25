@@ -1,32 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const allCities = [
-    "New York",
-    "London",
-    "Paris",
-    "Sydney",
-    "Tokyo",
-    "Moscow",
-    "Berlin",
-    "Doha",
-    "Rome",
-    "Toronto",
-    "Beijing",
-    "Cairo",
-    "Bangkok",
-    "Phuket",
-    "Dubai",
-    "Austin",
-    "Porto",
-    "Seoul",
-    "Chicago",
-    "Istanbul",
-  ];
+  const cityCountryMapping = {
+    "New York": "USA",
+    "London": "UK",
+    "Paris": "France",
+    "Sydney": "Australia",
+    "Tokyo": "Japan",
+    "Moscow": "Russia",
+    "Berlin": "Germany",
+    "Shanghai": "China",
+    "Rome": "Italy",
+    "Toronto": "Canada",
+    "Beijing": "China",
+    "Cairo": "Egypt",
+    "Bangkok": "Thailand",
+    "Phuket": "Thailand",
+    "Dubai": "UAE",
+    "Austin": "USA",
+    "Boston": "USA",
+    "Seoul": "South Korea",
+    "Chicago": "USA",
+    "Istanbul": "Turkey",
+  };
+
+  const allCities = Object.keys(cityCountryMapping);
   const apiKey = "b8aa09d2a5194d90af3235023241406";
   const popularCitiesSection = document.querySelector(".slider");
   const popularCitiesHeading = document.getElementById(
     "popular-cities-heading"
   );
-  const slideDuration = 4; // seconds
+  const slideDuration = 2; // seconds
   let currentSlide = 0;
   let intervalId;
 
@@ -52,13 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const hours = cityTime.getHours() % 12 || 12;
       const minutes = cityTime.getMinutes().toString().padStart(2, "0");
       const ampm = cityTime.getHours() >= 12 ? "PM" : "AM";
+      const country = cityCountryMapping[data.location.name];
       const slide = document.createElement("div");
       slide.className = "slide";
       slide.innerHTML = `
         <div class="weather-card">
           <img src="${data.current.condition.icon}" alt="Weather icon">
           <h3>${data.location.name}</h3>
-          <p><span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F</p>
+          <p class="country">${country}</p>
+          <p class="temperature-details"><span class="temperature">${data.current.temp_c}°C</span> / ${data.current.temp_f}°F</p>
           <p>${hours}:${minutes} ${ampm}</p>
         </div>
       `;
